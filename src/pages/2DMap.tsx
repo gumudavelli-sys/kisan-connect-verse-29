@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,12 +6,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MapPin, Layers, Info, Filter, Download } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 
+// Define types for better TypeScript support
+type CropData = {
+  rice: number;
+  cotton: number;
+  maize: number;
+  sugarcane: number;
+  others: number;
+};
+
+type CropDistributionData = {
+  [key: string]: CropData;
+};
+
 const TelanganaMap2D = () => {
   const [selectedLayer, setSelectedLayer] = useState('crops');
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
 
   // Sample crop distribution data for Telangana districts
-  const cropData = {
+  const cropData: CropDistributionData = {
     'Hyderabad': { rice: 15, cotton: 5, maize: 10, sugarcane: 8, others: 12 },
     'Warangal': { rice: 35, cotton: 25, maize: 15, sugarcane: 5, others: 20 },
     'Karimnagar': { rice: 40, cotton: 20, maize: 20, sugarcane: 10, others: 10 },
@@ -40,7 +52,7 @@ const TelanganaMap2D = () => {
     { name: 'Rangareddy', x: 40, y: 60, area: 'mixed' }
   ];
 
-  const getCropColor = (cropType) => {
+  const getCropColor = (cropType: keyof CropData) => {
     const colors = {
       rice: '#22C55E',
       cotton: '#F8FAFC',
@@ -107,7 +119,7 @@ const TelanganaMap2D = () => {
               <CardContent>
                 {selectedLayer === 'crops' && (
                   <div className="space-y-2">
-                    {Object.keys(cropData['Warangal']).map((crop) => (
+                    {(Object.keys(cropData['Warangal']) as Array<keyof CropData>).map((crop) => (
                       <div key={crop} className="flex items-center">
                         <div 
                           className="w-4 h-4 rounded mr-2" 
@@ -133,7 +145,7 @@ const TelanganaMap2D = () => {
                   {cropData[selectedDistrict] && (
                     <div className="space-y-2">
                       <h4 className="text-theme-green font-semibold">Crop Distribution:</h4>
-                      {Object.entries(cropData[selectedDistrict]).map(([crop, percentage]) => (
+                      {(Object.entries(cropData[selectedDistrict]) as Array<[keyof CropData, number]>).map(([crop, percentage]) => (
                         <div key={crop} className="flex justify-between items-center">
                           <span className="text-gray-300 capitalize">{crop}:</span>
                           <Badge variant="secondary">{percentage}%</Badge>
@@ -267,7 +279,7 @@ const TelanganaMap2D = () => {
                   <Card className="bg-slate-800 border-theme-green/30">
                     <CardContent className="pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                        {Object.keys(cropData['Warangal']).map((crop) => (
+                        {(Object.keys(cropData['Warangal']) as Array<keyof CropData>).map((crop) => (
                           <div key={crop} className="text-center p-4 bg-slate-700 rounded-lg">
                             <div 
                               className="w-12 h-12 rounded-full mx-auto mb-2"
