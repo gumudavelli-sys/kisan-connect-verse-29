@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Camera, MapPin, Upload, Plus, DollarSign, Package, BarChart3, Users } from 'lucide-react';
+import { Camera, MapPin, Plus, DollarSign, Package, BarChart3, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { useFarmerProfile } from '@/hooks/useFarmerProfile';
 
@@ -164,15 +164,6 @@ const FarmerDashboard = () => {
                 <option value="River">River</option>
                 <option value="Rainwater">Rainwater</option>
               </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Farm Photos</label>
-            <div className="border-2 border-dashed border-amber-300 rounded-lg p-6 text-center">
-              <Upload className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-              <p className="text-amber-700">Click to upload farm photos</p>
-              <p className="text-sm text-gray-500">PNG, JPG up to 10MB</p>
             </div>
           </div>
 
