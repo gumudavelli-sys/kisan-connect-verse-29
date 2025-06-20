@@ -1,14 +1,73 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Camera, MapPin, Upload, Plus, DollarSign, Package, BarChart3, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import { useFarmerProfile } from '@/hooks/useFarmerProfile';
 
 const FarmerDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
+  const { saveProfile, loadProfile, loading } = useFarmerProfile();
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    farm_name: '',
+    farmer_name: '',
+    location: '',
+    story: '',
+    land_size: '',
+    soil_type: '',
+    water_source: ''
+  });
+
+  // Load existing profile data on component mount
+  useEffect(() => {
+    const loadExistingProfile = async () => {
+      const profile = await loadProfile();
+      if (profile) {
+        setFormData({
+          farm_name: profile.farm_name || '',
+          farmer_name: profile.farmer_name || '',
+          location: profile.location || '',
+          story: profile.story || '',
+          land_size: profile.land_size?.toString() || '',
+          soil_type: profile.soil_type || '',
+          water_source: profile.water_source || ''
+        });
+      }
+    };
+    
+    loadExistingProfile();
+  }, []);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSaveProfile = async () => {
+    // Basic validation
+    if (!formData.farm_name.trim() || !formData.farmer_name.trim() || !formData.location.trim()) {
+      return;
+    }
+
+    const profileData = {
+      farm_name: formData.farm_name.trim(),
+      farmer_name: formData.farmer_name.trim(),
+      location: formData.location.trim(),
+      story: formData.story.trim() || undefined,
+      land_size: formData.land_size ? parseFloat(formData.land_size) : undefined,
+      soil_type: formData.soil_type || undefined,
+      water_source: formData.water_source || undefined
+    };
+
+    await saveProfile(profileData);
+  };
 
   const ProfileSetup = () => (
     <div className="space-y-6">
@@ -22,54 +81,88 @@ const FarmerDashboard = () => {
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Farm Name</label>
-              <Input placeholder="e.g., Green Valley Farm" className="border-amber-300 focus:border-amber-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Farm Name *</label>
+              <Input 
+                placeholder="e.g., Green Valley Farm" 
+                className="border-amber-300 focus:border-amber-500"
+                value={formData.farm_name}
+                onChange={(e) => handleInputChange('farm_name', e.target.value)}
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Farmer Name</label>
-              <Input placeholder="Your full name" className="border-amber-300 focus:border-amber-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Farmer Name *</label>
+              <Input 
+                placeholder="Your full name" 
+                className="border-amber-300 focus:border-amber-500"
+                value={formData.farmer_name}
+                onChange={(e) => handleInputChange('farmer_name', e.target.value)}
+                required
+              />
             </div>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Farm Location</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Farm Location *</label>
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-amber-600" />
-              <Input placeholder="Village, District, State" className="border-amber-300 focus:border-amber-500" />
+              <Input 
+                placeholder="Village, District, State" 
+                className="border-amber-300 focus:border-amber-500"
+                value={formData.location}
+                onChange={(e) => handleInputChange('location', e.target.value)}
+                required
+              />
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Your Story</label>
-            <textarea 
+            <Textarea 
               placeholder="Tell consumers about your farming journey, traditions, and values..."
-              className="w-full p-3 border border-amber-300 rounded-lg focus:border-amber-500 focus:outline-none resize-none h-24"
+              className="border-amber-300 focus:border-amber-500 resize-none h-24"
+              value={formData.story}
+              onChange={(e) => handleInputChange('story', e.target.value)}
             />
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Land Size (acres)</label>
-              <Input type="number" placeholder="5.2" className="border-amber-300 focus:border-amber-500" />
+              <Input 
+                type="number" 
+                placeholder="5.2" 
+                className="border-amber-300 focus:border-amber-500"
+                value={formData.land_size}
+                onChange={(e) => handleInputChange('land_size', e.target.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Soil Type</label>
-              <select className="w-full p-2 border border-amber-300 rounded-lg focus:border-amber-500 focus:outline-none">
-                <option>Select soil type</option>
-                <option>Clay</option>
-                <option>Sandy</option>
-                <option>Loamy</option>
-                <option>Silt</option>
+              <select 
+                className="w-full p-2 border border-amber-300 rounded-lg focus:border-amber-500 focus:outline-none"
+                value={formData.soil_type}
+                onChange={(e) => handleInputChange('soil_type', e.target.value)}
+              >
+                <option value="">Select soil type</option>
+                <option value="Clay">Clay</option>
+                <option value="Sandy">Sandy</option>
+                <option value="Loamy">Loamy</option>
+                <option value="Silt">Silt</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Water Source</label>
-              <select className="w-full p-2 border border-amber-300 rounded-lg focus:border-amber-500 focus:outline-none">
-                <option>Select water source</option>
-                <option>Borewell</option>
-                <option>Canal</option>
-                <option>River</option>
-                <option>Rainwater</option>
+              <select 
+                className="w-full p-2 border border-amber-300 rounded-lg focus:border-amber-500 focus:outline-none"
+                value={formData.water_source}
+                onChange={(e) => handleInputChange('water_source', e.target.value)}
+              >
+                <option value="">Select water source</option>
+                <option value="Borewell">Borewell</option>
+                <option value="Canal">Canal</option>
+                <option value="River">River</option>
+                <option value="Rainwater">Rainwater</option>
               </select>
             </div>
           </div>
@@ -83,8 +176,12 @@ const FarmerDashboard = () => {
             </div>
           </div>
 
-          <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
-            Save Profile
+          <Button 
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+            onClick={handleSaveProfile}
+            disabled={loading || !formData.farm_name.trim() || !formData.farmer_name.trim() || !formData.location.trim()}
+          >
+            {loading ? 'Saving...' : 'Save Profile'}
           </Button>
         </CardContent>
       </Card>
