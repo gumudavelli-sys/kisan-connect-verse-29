@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Layers, Info, Filter, Download } from 'lucide-react';
+import { MapPin, Layers, Info, Filter, Download, Thermometer, Droplets } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 
 // Define types for better TypeScript support
@@ -15,6 +16,22 @@ type CropData = {
   others: number;
 };
 
+type DetailedAreaData = {
+  name: string;
+  temperature: {
+    current: number;
+    min: number;
+    max: number;
+  };
+  soilRate: number;
+  soilType: string;
+  fertility: string;
+  moistureLevel: number;
+  crops: CropData;
+  coordinates: { x: number; y: number };
+  size: number;
+};
+
 type CropDistributionData = {
   [key: string]: CropData;
 };
@@ -22,6 +39,7 @@ type CropDistributionData = {
 const TelanganaMap2D = () => {
   const [selectedLayer, setSelectedLayer] = useState('crops');
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+  const [selectedArea, setSelectedArea] = useState<DetailedAreaData | null>(null);
 
   // Sample crop distribution data for Telangana districts
   const cropData: CropDistributionData = {
@@ -33,6 +51,87 @@ const TelanganaMap2D = () => {
     'Mahbubnagar': { rice: 25, cotton: 30, maize: 20, sugarcane: 10, others: 15 },
     'Rangareddy': { rice: 20, cotton: 15, maize: 25, sugarcane: 20, others: 20 }
   };
+
+  // Detailed area data with agricultural information
+  const detailedAreas: DetailedAreaData[] = [
+    {
+      name: 'Hyderabad Urban',
+      temperature: { current: 32, min: 18, max: 42 },
+      soilRate: 6.8,
+      soilType: 'Red Sandy Loam',
+      fertility: 'Medium',
+      moistureLevel: 45,
+      crops: { rice: 15, cotton: 5, maize: 10, sugarcane: 8, others: 12 },
+      coordinates: { x: 45, y: 55 },
+      size: 8
+    },
+    {
+      name: 'Warangal Agricultural Zone',
+      temperature: { current: 35, min: 20, max: 44 },
+      soilRate: 7.2,
+      soilType: 'Black Cotton Soil',
+      fertility: 'High',
+      moistureLevel: 62,
+      crops: { rice: 35, cotton: 25, maize: 15, sugarcane: 5, others: 20 },
+      coordinates: { x: 65, y: 35 },
+      size: 12
+    },
+    {
+      name: 'Karimnagar Fertile Plains',
+      temperature: { current: 34, min: 19, max: 43 },
+      soilRate: 7.5,
+      soilType: 'Alluvial Soil',
+      fertility: 'Very High',
+      moistureLevel: 68,
+      crops: { rice: 40, cotton: 20, maize: 20, sugarcane: 10, others: 10 },
+      coordinates: { x: 55, y: 25 },
+      size: 10
+    },
+    {
+      name: 'Khammam River Basin',
+      temperature: { current: 33, min: 21, max: 41 },
+      soilRate: 7.8,
+      soilType: 'Riverine Alluvium',
+      fertility: 'Very High',
+      moistureLevel: 75,
+      crops: { rice: 45, cotton: 15, maize: 10, sugarcane: 15, others: 15 },
+      coordinates: { x: 70, y: 60 },
+      size: 11
+    },
+    {
+      name: 'Nalgonda Plateau',
+      temperature: { current: 36, min: 22, max: 45 },
+      soilRate: 6.5,
+      soilType: 'Red Laterite',
+      fertility: 'Medium',
+      moistureLevel: 38,
+      crops: { rice: 30, cotton: 25, maize: 25, sugarcane: 5, others: 15 },
+      coordinates: { x: 55, y: 60 },
+      size: 9
+    },
+    {
+      name: 'Mahbubnagar Dryland',
+      temperature: { current: 38, min: 24, max: 46 },
+      soilRate: 6.2,
+      soilType: 'Red Sandy',
+      fertility: 'Low to Medium',
+      moistureLevel: 32,
+      crops: { rice: 25, cotton: 30, maize: 20, sugarcane: 10, others: 15 },
+      coordinates: { x: 35, y: 70 },
+      size: 10
+    },
+    {
+      name: 'Rangareddy Mixed Zone',
+      temperature: { current: 31, min: 17, max: 40 },
+      soilRate: 7.0,
+      soilType: 'Mixed Alluvial',
+      fertility: 'High',
+      moistureLevel: 58,
+      crops: { rice: 20, cotton: 15, maize: 25, sugarcane: 20, others: 20 },
+      coordinates: { x: 40, y: 60 },
+      size: 8
+    }
+  ];
 
   const layerOptions = [
     { id: 'crops', name: 'Crop Distribution', color: 'bg-green-500' },
@@ -63,6 +162,35 @@ const TelanganaMap2D = () => {
     return colors[cropType] || '#6B7280';
   };
 
+  const getSoilColor = (soilType: string) => {
+    const colors: { [key: string]: string } = {
+      'Red Sandy Loam': '#CD853F',
+      'Black Cotton Soil': '#2F2F2F',
+      'Alluvial Soil': '#D2B48C',
+      'Riverine Alluvium': '#F4A460',
+      'Red Laterite': '#A0522D',
+      'Red Sandy': '#CD853F',
+      'Mixed Alluvial': '#DEB887'
+    };
+    return colors[soilType] || '#8B4513';
+  };
+
+  const getFertilityColor = (fertility: string) => {
+    const colors: { [key: string]: string } = {
+      'Very High': '#22C55E',
+      'High': '#84CC16',
+      'Medium': '#EAB308',
+      'Low to Medium': '#F97316',
+      'Low': '#EF4444'
+    };
+    return colors[fertility] || '#6B7280';
+  };
+
+  const handleAreaClick = (area: DetailedAreaData) => {
+    setSelectedArea(area);
+    setSelectedDistrict(area.name);
+  };
+
   return (
     <div className="min-h-screen bg-theme-dark-blue">
       <Navbar />
@@ -74,8 +202,8 @@ const TelanganaMap2D = () => {
             Telangana Agricultural Map - 2D View
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Comprehensive agricultural data visualization showing crop distribution, 
-            soil types, irrigation systems, and climate patterns across Telangana districts
+            Interactive agricultural data visualization showing crop distribution, 
+            soil analysis, temperature, and fertility patterns across Telangana districts
           </p>
         </div>
 
@@ -130,29 +258,105 @@ const TelanganaMap2D = () => {
                     ))}
                   </div>
                 )}
+                {selectedLayer === 'soil' && (
+                  <div className="space-y-2">
+                    {['Red Sandy Loam', 'Black Cotton Soil', 'Alluvial Soil', 'Riverine Alluvium'].map((soil) => (
+                      <div key={soil} className="flex items-center">
+                        <div 
+                          className="w-4 h-4 rounded mr-2" 
+                          style={{ backgroundColor: getSoilColor(soil) }}
+                        />
+                        <span className="text-gray-300 text-xs">{soil}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedLayer === 'temperature' && (
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded mr-2 bg-red-600" />
+                      <span className="text-gray-300 text-xs">High (35-46°C)</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded mr-2 bg-orange-500" />
+                      <span className="text-gray-300 text-xs">Medium (25-35°C)</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded mr-2 bg-blue-500" />
+                      <span className="text-gray-300 text-xs">Low (15-25°C)</span>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* District Info */}
-            {selectedDistrict && (
+            {/* Detailed Area Info */}
+            {selectedArea && (
               <Card className="bg-slate-800 border-theme-green/30">
                 <CardHeader>
-                  <CardTitle className="text-theme-white">
-                    {selectedDistrict} District
+                  <CardTitle className="text-theme-white flex items-center">
+                    <MapPin className="mr-2 h-5 w-5" />
+                    {selectedArea.name}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  {cropData[selectedDistrict] && (
-                    <div className="space-y-2">
-                      <h4 className="text-theme-green font-semibold">Crop Distribution:</h4>
-                      {(Object.entries(cropData[selectedDistrict]) as Array<[keyof CropData, number]>).map(([crop, percentage]) => (
-                        <div key={crop} className="flex justify-between items-center">
-                          <span className="text-gray-300 capitalize">{crop}:</span>
-                          <Badge variant="secondary">{percentage}%</Badge>
-                        </div>
-                      ))}
+                <CardContent className="space-y-4">
+                  {/* Temperature */}
+                  <div className="space-y-2">
+                    <h4 className="text-theme-green font-semibold flex items-center">
+                      <Thermometer className="mr-2 h-4 w-4" />
+                      Temperature
+                    </h4>
+                    <div className="text-gray-300 text-sm space-y-1">
+                      <div>Current: <span className="text-white">{selectedArea.temperature.current}°C</span></div>
+                      <div>Range: <span className="text-white">{selectedArea.temperature.min}°C - {selectedArea.temperature.max}°C</span></div>
                     </div>
-                  )}
+                  </div>
+
+                  {/* Soil Information */}
+                  <div className="space-y-2">
+                    <h4 className="text-theme-green font-semibold">Soil Analysis</h4>
+                    <div className="text-gray-300 text-sm space-y-1">
+                      <div>Type: <span className="text-white">{selectedArea.soilType}</span></div>
+                      <div>pH Rate: <span className="text-white">{selectedArea.soilRate}</span></div>
+                      <div className="flex items-center">
+                        <span>Fertility: </span>
+                        <Badge 
+                          className="ml-2 text-xs"
+                          style={{ backgroundColor: getFertilityColor(selectedArea.fertility) }}
+                        >
+                          {selectedArea.fertility}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Moisture Level */}
+                  <div className="space-y-2">
+                    <h4 className="text-theme-green font-semibold flex items-center">
+                      <Droplets className="mr-2 h-4 w-4" />
+                      Moisture Level
+                    </h4>
+                    <div className="flex items-center space-x-2">
+                      <div className="flex-1 bg-slate-700 rounded-full h-2">
+                        <div 
+                          className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${selectedArea.moistureLevel}%` }}
+                        />
+                      </div>
+                      <span className="text-white text-sm">{selectedArea.moistureLevel}%</span>
+                    </div>
+                  </div>
+
+                  {/* Crop Distribution */}
+                  <div className="space-y-2">
+                    <h4 className="text-theme-green font-semibold">Crop Distribution</h4>
+                    {(Object.entries(selectedArea.crops) as Array<[keyof CropData, number]>).map(([crop, percentage]) => (
+                      <div key={crop} className="flex justify-between items-center">
+                        <span className="text-gray-300 capitalize text-sm">{crop}:</span>
+                        <Badge variant="secondary" className="text-xs">{percentage}%</Badge>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -163,7 +367,7 @@ const TelanganaMap2D = () => {
             <Card className="bg-slate-800 border-theme-green/30 h-[600px]">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-theme-white">
-                  Interactive Agricultural Map
+                  Interactive Agricultural Map - Click areas for details
                 </CardTitle>
                 <div className="flex space-x-2">
                   <Button variant="outline" size="sm" className="text-gray-300 border-gray-600">
@@ -177,39 +381,54 @@ const TelanganaMap2D = () => {
                 </div>
               </CardHeader>
               <CardContent className="relative h-full">
-                {/* Telangana State Outline */}
-                <div className="relative w-full h-full bg-gradient-to-br from-green-900/20 to-blue-900/20 rounded-lg overflow-hidden">
-                  {/* SVG Map of Telangana */}
-                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                {/* Telangana State Outline with Satellite-like Background */}
+                <div 
+                  className="relative w-full h-full rounded-lg overflow-hidden cursor-pointer"
+                  style={{
+                    backgroundImage: `url(/lovable-uploads/fd3deb43-00b6-4256-8080-a6316459a7eb.png)`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)'
+                  }}
+                >
+                  {/* SVG Map overlay */}
+                  <svg viewBox="0 0 100 100" className="w-full h-full absolute inset-0">
                     {/* State boundary */}
                     <path
                       d="M20,20 L80,15 L85,40 L75,70 L65,85 L35,80 L15,60 Z"
-                      fill="rgba(34, 197, 94, 0.1)"
+                      fill="rgba(34, 197, 94, 0.05)"
                       stroke="#22C55E"
-                      strokeWidth="0.5"
+                      strokeWidth="0.3"
                     />
                     
-                    {/* District markers */}
-                    {districts.map((district, index) => (
-                      <g key={district.name}>
+                    {/* Detailed agricultural areas */}
+                    {detailedAreas.map((area, index) => (
+                      <g key={area.name}>
                         <circle
-                          cx={district.x}
-                          cy={district.y}
-                          r="3"
-                          fill={selectedLayer === 'crops' ? getCropColor('rice') : '#22C55E'}
+                          cx={area.coordinates.x}
+                          cy={area.coordinates.y}
+                          r={area.size}
+                          fill={
+                            selectedLayer === 'crops' ? getCropColor('rice') :
+                            selectedLayer === 'soil' ? getSoilColor(area.soilType) :
+                            selectedLayer === 'temperature' ? (area.temperature.current > 35 ? '#DC2626' : area.temperature.current > 25 ? '#F97316' : '#3B82F6') :
+                            getFertilityColor(area.fertility)
+                          }
                           stroke="#ffffff"
                           strokeWidth="0.5"
-                          className="cursor-pointer hover:r-4 transition-all"
-                          onClick={() => setSelectedDistrict(district.name)}
+                          className="cursor-pointer hover:opacity-80 transition-all"
+                          onClick={() => handleAreaClick(area)}
+                          opacity="0.7"
                         />
                         <text
-                          x={district.x}
-                          y={district.y - 5}
+                          x={area.coordinates.x}
+                          y={area.coordinates.y - area.size - 2}
                           textAnchor="middle"
-                          className="fill-white text-xs font-medium"
-                          style={{ fontSize: '3px' }}
+                          className="fill-white text-xs font-medium pointer-events-none"
+                          style={{ fontSize: '2.5px' }}
                         >
-                          {district.name}
+                          {area.name.split(' ')[0]}
                         </text>
                       </g>
                     ))}
@@ -220,14 +439,14 @@ const TelanganaMap2D = () => {
                       fill="none"
                       stroke="#3B82F6"
                       strokeWidth="1"
-                      opacity="0.6"
+                      opacity="0.8"
                     />
                     <path
                       d="M15,50 Q45,55 75,60"
                       fill="none"
                       stroke="#3B82F6"
                       strokeWidth="0.8"
-                      opacity="0.6"
+                      opacity="0.8"
                     />
                   </svg>
 
@@ -236,8 +455,8 @@ const TelanganaMap2D = () => {
                     <Badge className="bg-theme-green text-white">
                       Active Layer: {layerOptions.find(l => l.id === selectedLayer)?.name}
                     </Badge>
-                    <div className="text-xs text-gray-300 bg-black/50 p-2 rounded">
-                      Click on district markers for detailed information
+                    <div className="text-xs text-gray-300 bg-black/70 p-2 rounded">
+                      Click on colored areas for detailed agricultural information
                     </div>
                   </div>
                 </div>
