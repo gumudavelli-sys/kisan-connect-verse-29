@@ -62,7 +62,7 @@ const SatelliteMap = () => {
       waterMoisture: 92,
       landSize: 7.5,
       price: 2800,
-      image: '/lovable-uploads/f4627823-5c7a-475b-be83-4d59c1a0a350.png',
+      image: 'https://farmandfoodfile.com/wp-content/uploads/2013/10/FFF_GoldField-980x600.jpg',
       farmerPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43212'
     }
