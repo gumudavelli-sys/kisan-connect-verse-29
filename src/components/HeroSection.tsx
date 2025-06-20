@@ -2,8 +2,11 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -36,14 +39,16 @@ const HeroSection = () => {
           <Button 
             size="lg"
             className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg rounded-lg transition-all transform hover:scale-105"
+            onClick={() => navigate('/consumer-dashboard')}
           >
-            Explore Village Map
+            Start Exploring Farms
           </Button>
           
           <Button 
             size="lg"
             variant="outline"
             className="border-amber-600 text-amber-400 hover:bg-amber-600 hover:text-white px-8 py-4 text-lg rounded-lg transition-all transform hover:scale-105"
+            onClick={() => navigate('/farmer-dashboard')}
           >
             I'm a Farmer
           </Button>
