@@ -50,7 +50,7 @@ const HeroSection = () => {
             className="border-amber-600 text-amber-400 hover:bg-amber-600 hover:text-white px-8 py-4 text-lg rounded-lg transition-all transform hover:scale-105"
             onClick={() => navigate('/farmer-dashboard')}
           >
-            I'm a Farmer
+            Register Your Farm
           </Button>
         </div>
         
