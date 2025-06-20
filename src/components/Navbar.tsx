@@ -2,15 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, User, MapPin, LogOut } from 'lucide-react';
+import { Menu, User, MapPin, LogOut, Map } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser } from '@supabase/supabase-js';
+import { useNavigate } from 'react-router-dom';
 import LoginModal from './LoginModal';
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get initial session
@@ -41,25 +43,50 @@ const Navbar = () => {
     setIsLoginOpen(false);
   };
 
+  const handleFarmerClick = () => {
+    navigate('/farmer-dashboard');
+  };
+
+  const handleConsumerClick = () => {
+    navigate('/consumer-dashboard');
+  };
+
+  const handle3DMapClick = () => {
+    navigate('/3d-map');
+  };
+
   return (
     <>
       <nav className="bg-slate-900/95 backdrop-blur-md border-b border-green-800/30 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
               <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-green-400" />
               <span className="text-lg sm:text-xl font-bold text-white">FarmDirect</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <a href="#" className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base">
+              <button 
+                onClick={handleConsumerClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base"
+              >
                 Explore Farms
-              </a>
-              <a href="#" className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base">
+              </button>
+              <button 
+                onClick={handleFarmerClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base"
+              >
                 For Farmers
-              </a>
+              </button>
+              <button 
+                onClick={handle3DMapClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base flex items-center space-x-1"
+              >
+                <Map className="w-4 h-4" />
+                <span>3D Map</span>
+              </button>
               <a href="#" className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base">
                 About
               </a>
@@ -109,12 +136,25 @@ const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="right" className="bg-slate-900 border-green-800/30 w-80 sm:w-96">
                 <div className="flex flex-col space-y-6 mt-8">
-                  <a href="#" className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700">
+                  <button 
+                    onClick={handleConsumerClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
+                  >
                     Explore Farms
-                  </a>
-                  <a href="#" className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700">
+                  </button>
+                  <button 
+                    onClick={handleFarmerClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
+                  >
                     For Farmers
-                  </a>
+                  </button>
+                  <button 
+                    onClick={handle3DMapClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left flex items-center space-x-2"
+                  >
+                    <Map className="w-5 h-5" />
+                    <span>3D Map</span>
+                  </button>
                   <a href="#" className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700">
                     About
                   </a>
