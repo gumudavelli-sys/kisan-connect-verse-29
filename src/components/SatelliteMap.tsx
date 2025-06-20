@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,7 +34,7 @@ const SatelliteMap = () => {
       waterMoisture: 85,
       landSize: 5.2,
       price: 2500,
-      image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop',
+      image: '/lovable-uploads/3c5c3b33-dda6-40c3-a8f5-22780a28f184.png',
       farmerPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43210'
     },
@@ -49,7 +48,7 @@ const SatelliteMap = () => {
       waterMoisture: 78,
       landSize: 3.8,
       price: 3200,
-      image: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=800&h=600&fit=crop',
+      image: '/lovable-uploads/77f53124-feec-4de5-9dfa-6f422ac6cc7d.png',
       farmerPhoto: 'https://images.unsplash.com/photo-1494790108755-2616b612b820?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43211'
     },
@@ -63,7 +62,7 @@ const SatelliteMap = () => {
       waterMoisture: 92,
       landSize: 7.5,
       price: 2800,
-      image: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=800&h=600&fit=crop',
+      image: '/lovable-uploads/f4627823-5c7a-475b-be83-4d59c1a0a350.png',
       farmerPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43212'
     }
