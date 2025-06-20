@@ -86,26 +86,6 @@ const FeatureSection = () => {
             </Card>
           ))}
         </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-green-600/20 to-amber-600/20 rounded-2xl p-8 border border-green-800/30">
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Ready to Transform Agriculture?
-            </h3>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-              Join thousands of farmers and consumers who are already part of the direct-trade revolution.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                Start Exploring Farms
-              </button>
-              <button className="border border-amber-600 text-amber-400 hover:bg-amber-600 hover:text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                Register Your Farm
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
