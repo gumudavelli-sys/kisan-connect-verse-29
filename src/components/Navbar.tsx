@@ -55,6 +55,14 @@ const Navbar = () => {
     navigate('/3d-map');
   };
 
+  const handleAboutClick = () => {
+    navigate('/about');
+  };
+
+  const handleContactClick = () => {
+    navigate('/contact');
+  };
+
   return (
     <>
       <nav className="bg-slate-900/95 backdrop-blur-md border-b border-green-800/30 sticky top-0 z-50">
@@ -87,12 +95,18 @@ const Navbar = () => {
                 <Map className="w-4 h-4" />
                 <span>3D Map</span>
               </button>
-              <a href="#" className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base">
+              <button 
+                onClick={handleAboutClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base"
+              >
                 About
-              </a>
-              <a href="#" className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base">
+              </button>
+              <button 
+                onClick={handleContactClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base"
+              >
                 Contact
-              </a>
+              </button>
             </div>
 
             {/* Login/Logout Button - Desktop */}
@@ -155,12 +169,18 @@ const Navbar = () => {
                     <Map className="w-5 h-5" />
                     <span>3D Map</span>
                   </button>
-                  <a href="#" className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700">
+                  <button 
+                    onClick={handleAboutClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
+                  >
                     About
-                  </a>
-                  <a href="#" className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700">
+                  </button>
+                  <button 
+                    onClick={handleContactClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
+                  >
                     Contact
-                  </a>
+                  </button>
                   
                   {/* Mobile Login/Logout */}
                   <div className="pt-6">
