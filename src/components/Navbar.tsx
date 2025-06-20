@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, User, MapPin, LogOut, Map } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Menu, User, MapPin, LogOut, Map, ShoppingCart } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [cartItemCount, setCartItemCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +35,28 @@ const Navbar = () => {
     );
 
     return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    // Update cart count when component mounts and when storage changes
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('farmCart') || '[]');
+      const totalItems = cart.reduce((total: number, item: any) => total + item.quantity, 0);
+      setCartItemCount(totalItems);
+    };
+
+    updateCartCount();
+
+    // Listen for storage changes
+    window.addEventListener('storage', updateCartCount);
+    
+    // Custom event for cart updates
+    window.addEventListener('cartUpdated', updateCartCount);
+
+    return () => {
+      window.removeEventListener('storage', updateCartCount);
+      window.removeEventListener('cartUpdated', updateCartCount);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -61,6 +85,10 @@ const Navbar = () => {
 
   const handleContactClick = () => {
     navigate('/contact');
+  };
+
+  const handleCartClick = () => {
+    navigate('/cart');
   };
 
   return (
@@ -109,8 +137,24 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Login/Logout Button - Desktop */}
-            <div className="hidden md:flex">
+            {/* Cart and Login/Logout Button - Desktop */}
+            <div className="hidden md:flex items-center space-x-4">
+              {/* Cart Button */}
+              <Button
+                onClick={handleCartClick}
+                variant="ghost"
+                className="relative text-gray-300 hover:text-green-400 hover:bg-slate-800"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {cartItemCount > 0 && (
+                  <Badge 
+                    className="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[1.25rem] h-5 flex items-center justify-center"
+                  >
+                    {cartItemCount}
+                  </Badge>
+                )}
+              </Button>
+
               {loading ? (
                 <div className="w-20 h-10 bg-slate-700 animate-pulse rounded-lg"></div>
               ) : !user ? (
@@ -180,6 +224,22 @@ const Navbar = () => {
                     className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
                   >
                     Contact
+                  </button>
+                  
+                  {/* Mobile Cart */}
+                  <button 
+                    onClick={handleCartClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <ShoppingCart className="w-5 h-5" />
+                      <span>Cart</span>
+                    </div>
+                    {cartItemCount > 0 && (
+                      <Badge className="bg-green-600 text-white">
+                        {cartItemCount}
+                      </Badge>
+                    )}
                   </button>
                   
                   {/* Mobile Login/Logout */}

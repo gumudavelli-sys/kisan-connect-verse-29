@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MapPin, Heart, ShoppingCart, Filter, Star, Phone, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import SatelliteMap from '@/components/SatelliteMap';
 
@@ -31,6 +33,7 @@ const ConsumerDashboard = () => {
   const [selectedCrop, setSelectedCrop] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const farms: Farm[] = [
     {
@@ -98,6 +101,10 @@ const ConsumerDashboard = () => {
     
     return matchesSearch && matchesCrop && matchesPrice;
   });
+
+  const handleOrderNow = (farmId: string) => {
+    navigate(`/order/${farmId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50">
@@ -242,7 +249,10 @@ const ConsumerDashboard = () => {
                       </div>
                       
                       <div className="flex gap-2 pt-2">
-                        <Button className="flex-1 bg-green-600 hover:bg-green-700">
+                        <Button 
+                          className="flex-1 bg-green-600 hover:bg-green-700"
+                          onClick={() => handleOrderNow(farm.id)}
+                        >
                           <ShoppingCart className="w-4 h-4 mr-2" />
                           Order Now
                         </Button>
