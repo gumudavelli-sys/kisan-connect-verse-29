@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -75,6 +74,10 @@ const Navbar = () => {
     navigate('/consumer-dashboard');
   };
 
+  const handle2DMapClick = () => {
+    navigate('/2d-map');
+  };
+
   const handle3DMapClick = () => {
     navigate('/3d-map');
   };
@@ -115,6 +118,13 @@ const Navbar = () => {
                 className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base"
               >
                 For Farmers
+              </button>
+              <button 
+                onClick={handle2DMapClick}
+                className="text-gray-300 hover:text-green-400 transition-colors text-sm lg:text-base flex items-center space-x-1"
+              >
+                <Map className="w-4 h-4" />
+                <span>2D Map</span>
               </button>
               <button 
                 onClick={handle3DMapClick}
@@ -205,6 +215,13 @@ const Navbar = () => {
                     className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left"
                   >
                     For Farmers
+                  </button>
+                  <button 
+                    onClick={handle2DMapClick}
+                    className="text-gray-300 hover:text-green-400 transition-colors py-3 text-lg border-b border-slate-700 text-left flex items-center space-x-2"
+                  >
+                    <Map className="w-5 h-5" />
+                    <span>2D Map</span>
                   </button>
                   <button 
                     onClick={handle3DMapClick}

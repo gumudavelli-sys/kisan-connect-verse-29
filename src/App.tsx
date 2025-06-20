@@ -10,6 +10,7 @@ import ConsumerDashboard from "./pages/ConsumerDashboard";
 import OrderDetails from "./pages/OrderDetails";
 import Cart from "./pages/Cart";
 import ThreeDMap from "./pages/3DMap";
+import TelanganaMap2D from "./pages/2DMap";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/order/:farmId" element={<OrderDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/3d-map" element={<ThreeDMap />} />
+          <Route path="/2d-map" element={<TelanganaMap2D />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
