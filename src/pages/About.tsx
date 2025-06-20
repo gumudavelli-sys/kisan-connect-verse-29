@@ -23,7 +23,7 @@ const About = () => {
     {
       name: 'Priya Sharma',
       role: 'Head of Farmer Relations',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b820?w=300&h=300&fit=crop&crop=face',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=300&fit=crop&crop=face',
       bio: 'Rural development expert passionate about empowering farming communities'
     },
     {
