@@ -34,7 +34,7 @@ const SatelliteMap = () => {
       waterMoisture: 85,
       landSize: 5.2,
       price: 2500,
-      image: '/lovable-uploads/3c5c3b33-dda6-40c3-a8f5-22780a28f184.png',
+      image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43210'
     },
@@ -48,7 +48,7 @@ const SatelliteMap = () => {
       waterMoisture: 78,
       landSize: 3.8,
       price: 3200,
-      image: '/lovable-uploads/77f53124-feec-4de5-9dfa-6f422ac6cc7d.png',
+      image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1494790108755-2616b612b820?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43211'
     },
@@ -62,7 +62,7 @@ const SatelliteMap = () => {
       waterMoisture: 92,
       landSize: 7.5,
       price: 2800,
-      image: 'https://farmandfoodfile.com/wp-content/uploads/2013/10/FFF_GoldField-980x600.jpg',
+      image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       contact: '+91 98765 43212'
     }

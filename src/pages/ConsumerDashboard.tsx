@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,7 +38,7 @@ const ConsumerDashboard = () => {
       name: 'Green Valley Organic Farm',
       farmer: 'Rajesh Kumar',
       location: 'Warangal, Telangana',
-      image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
       cropType: 'Organic Rice',
       price: 2500,
@@ -56,7 +55,7 @@ const ConsumerDashboard = () => {
       name: 'Sunrise Heritage Farm',
       farmer: 'Priya Sharma',
       location: 'Nizamabad, Telangana',
-      image: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1494790108755-2616b612b820?w=100&h=100&fit=crop&crop=face',
       cropType: 'Traditional Wheat',
       price: 3200,
@@ -73,7 +72,7 @@ const ConsumerDashboard = () => {
       name: 'Golden Fields Farm',
       farmer: 'Suresh Patel',
       location: 'Karimnagar, Telangana',
-      image: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=800&h=600&fit=crop',
+      image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&h=600&fit=crop',
       farmerPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       cropType: 'Sugarcane',
       price: 2800,
