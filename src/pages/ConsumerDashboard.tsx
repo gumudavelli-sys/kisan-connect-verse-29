@@ -162,9 +162,9 @@ const ConsumerDashboard = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Prices</SelectItem>
-                    <SelectItem value="low">< ₹2,500</SelectItem>
+                    <SelectItem value="low">&lt; ₹2,500</SelectItem>
                     <SelectItem value="medium">₹2,500-3,000</SelectItem>
-                    <SelectItem value="high">> ₹3,000</SelectItem>
+                    <SelectItem value="high">&gt; ₹3,000</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
