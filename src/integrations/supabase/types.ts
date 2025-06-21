@@ -9,7 +9,81 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      farmer_profiles: {
+        Row: {
+          created_at: string
+          farm_name: string
+          farm_photos: string[] | null
+          farmer_name: string
+          id: string
+          land_size: number | null
+          location: string
+          soil_type: string | null
+          story: string | null
+          updated_at: string
+          user_id: string
+          water_source: string | null
+        }
+        Insert: {
+          created_at?: string
+          farm_name: string
+          farm_photos?: string[] | null
+          farmer_name: string
+          id?: string
+          land_size?: number | null
+          location: string
+          soil_type?: string | null
+          story?: string | null
+          updated_at?: string
+          user_id: string
+          water_source?: string | null
+        }
+        Update: {
+          created_at?: string
+          farm_name?: string
+          farm_photos?: string[] | null
+          farmer_name?: string
+          id?: string
+          land_size?: number | null
+          location?: string
+          soil_type?: string | null
+          story?: string | null
+          updated_at?: string
+          user_id?: string
+          water_source?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          farm_name: string | null
+          full_name: string | null
+          id: string
+          location: string | null
+          updated_at: string | null
+          user_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          farm_name?: string | null
+          full_name?: string | null
+          id: string
+          location?: string | null
+          updated_at?: string | null
+          user_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          farm_name?: string | null
+          full_name?: string | null
+          id?: string
+          location?: string | null
+          updated_at?: string | null
+          user_type?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
