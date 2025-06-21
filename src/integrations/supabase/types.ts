@@ -69,6 +69,51 @@ export type Database = {
         }
         Relationships: []
       }
+      farmer_profiles: {
+        Row: {
+          created_at: string
+          farm_name: string
+          farm_photos: string[] | null
+          farmer_name: string
+          id: string
+          land_size: number | null
+          location: string
+          soil_type: string | null
+          story: string | null
+          updated_at: string
+          user_id: string
+          water_source: string | null
+        }
+        Insert: {
+          created_at?: string
+          farm_name: string
+          farm_photos?: string[] | null
+          farmer_name: string
+          id?: string
+          land_size?: number | null
+          location: string
+          soil_type?: string | null
+          story?: string | null
+          updated_at?: string
+          user_id: string
+          water_source?: string | null
+        }
+        Update: {
+          created_at?: string
+          farm_name?: string
+          farm_photos?: string[] | null
+          farmer_name?: string
+          id?: string
+          land_size?: number | null
+          location?: string
+          soil_type?: string | null
+          story?: string | null
+          updated_at?: string
+          user_id?: string
+          water_source?: string | null
+        }
+        Relationships: []
+      }
       user_auth_details: {
         Row: {
           additional_info: Json | null

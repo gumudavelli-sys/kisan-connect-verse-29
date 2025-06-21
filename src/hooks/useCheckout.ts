@@ -34,7 +34,7 @@ export const useCheckout = () => {
         .from('checkout_transactions')
         .insert({
           user_id: user.id,
-          cart_items: cartItems,
+          cart_items: cartItems as any, // Cast to any to match Json type
           total_amount: totalAmount,
           payment_status: 'completed'
         });

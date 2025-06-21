@@ -93,23 +93,25 @@ const TelanganaMap2D = () => {
         location={selectedLocation || ""}
       />
 
-      <style jsx>{`
-        .pulse-animation {
-          animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .pulse-animation {
+            animation: pulse 2s infinite;
           }
-          70% {
-            box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+          
+          @keyframes pulse {
+            0% {
+              box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            70% {
+              box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
           }
-          100% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-          }
-        }
-      `}</style>
+        `
+      }} />
     </div>
   );
 };
