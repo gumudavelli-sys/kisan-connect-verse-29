@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,8 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, MapPin, Droplets, Thermometer, Sprout, User, Phone, ShoppingCart, Plus, Minus } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import { useCart } from '@/hooks/useCart';
-import ContactFarmerModal from '@/components/ContactFarmerModal';
+import { useToast } from '@/hooks/use-toast';
 
 interface Farm {
   id: string;
@@ -32,9 +32,8 @@ interface Farm {
 const OrderDetails = () => {
   const { farmId } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { toast } = useToast();
   const [orderQuantity, setOrderQuantity] = useState(1);
-  const [showContactModal, setShowContactModal] = useState(false);
 
   // Mock farm data (in real app, this would come from API/props)
   const farms: Farm[] = [
@@ -116,14 +115,37 @@ const OrderDetails = () => {
   }
 
   const handleAddToCart = () => {
-    addToCart({
+    const cartItem = {
       id: farm.id,
       name: farm.name,
       farmer: farm.farmer,
       cropType: farm.cropType,
       price: farm.price,
       quantity: orderQuantity,
-      image: farm.image
+      image: farm.image,
+      total: farm.price * orderQuantity
+    };
+
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem('farmCart') || '[]');
+    
+    // Check if item already exists
+    const existingItemIndex = existingCart.findIndex((item: any) => item.id === farm.id);
+    
+    if (existingItemIndex > -1) {
+      // Update quantity if item exists
+      existingCart[existingItemIndex].quantity += orderQuantity;
+      existingCart[existingItemIndex].total = existingCart[existingItemIndex].quantity * farm.price;
+    } else {
+      // Add new item
+      existingCart.push(cartItem);
+    }
+
+    localStorage.setItem('farmCart', JSON.stringify(existingCart));
+    
+    toast({
+      title: "Added to Cart",
+      description: `${orderQuantity} quintal(s) of ${farm.cropType} added to your cart.`,
     });
   };
 
@@ -292,7 +314,6 @@ const OrderDetails = () => {
                       Add to Cart
                     </Button>
                     <Button 
-                      onClick={() => setShowContactModal(true)}
                       variant="outline" 
                       className="w-full border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white py-3"
                     >
@@ -319,12 +340,6 @@ const OrderDetails = () => {
           </div>
         </div>
       </div>
-      
-      <ContactFarmerModal 
-        isOpen={showContactModal}
-        onClose={() => setShowContactModal(false)}
-        farm={farm}
-      />
     </div>
   );
 };

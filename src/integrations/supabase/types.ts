@@ -9,66 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      checkout_transactions: {
-        Row: {
-          cart_items: Json
-          id: string
-          payment_status: string | null
-          total_amount: number
-          transaction_date: string
-          user_id: string | null
-        }
-        Insert: {
-          cart_items: Json
-          id?: string
-          payment_status?: string | null
-          total_amount: number
-          transaction_date?: string
-          user_id?: string | null
-        }
-        Update: {
-          cart_items?: Json
-          id?: string
-          payment_status?: string | null
-          total_amount?: number
-          transaction_date?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      contact_messages: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          message: string
-          name: string
-          phone: string | null
-          subject: string
-          user_type: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          message: string
-          name: string
-          phone?: string | null
-          subject: string
-          user_type?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          message?: string
-          name?: string
-          phone?: string | null
-          subject?: string
-          user_type?: string | null
-        }
-        Relationships: []
-      }
       farmer_profiles: {
         Row: {
           created_at: string
@@ -114,47 +54,32 @@ export type Database = {
         }
         Relationships: []
       }
-      user_auth_details: {
+      profiles: {
         Row: {
-          additional_info: Json | null
-          created_at: string
-          email: string
-          email_verified: boolean | null
+          created_at: string | null
+          farm_name: string | null
           full_name: string | null
           id: string
-          phone: string | null
-          phone_verified: boolean | null
-          signup_date: string | null
-          updated_at: string
-          user_id: string
+          location: string | null
+          updated_at: string | null
           user_type: string | null
         }
         Insert: {
-          additional_info?: Json | null
-          created_at?: string
-          email: string
-          email_verified?: boolean | null
+          created_at?: string | null
+          farm_name?: string | null
           full_name?: string | null
-          id?: string
-          phone?: string | null
-          phone_verified?: boolean | null
-          signup_date?: string | null
-          updated_at?: string
-          user_id: string
+          id: string
+          location?: string | null
+          updated_at?: string | null
           user_type?: string | null
         }
         Update: {
-          additional_info?: Json | null
-          created_at?: string
-          email?: string
-          email_verified?: boolean | null
+          created_at?: string | null
+          farm_name?: string | null
           full_name?: string | null
           id?: string
-          phone?: string | null
-          phone_verified?: boolean | null
-          signup_date?: string | null
-          updated_at?: string
-          user_id?: string
+          location?: string | null
+          updated_at?: string | null
           user_type?: string | null
         }
         Relationships: []

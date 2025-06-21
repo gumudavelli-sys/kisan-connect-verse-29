@@ -8,16 +8,6 @@ import { Camera, MapPin, Plus, DollarSign, Package, BarChart3, Users } from 'luc
 import Navbar from '@/components/Navbar';
 import { useFarmerProfile } from '@/hooks/useFarmerProfile';
 
-interface FarmerProfile {
-  farm_name: string;
-  farmer_name: string;
-  location: string;
-  story?: string;
-  land_size?: number;
-  soil_type?: string;
-  water_source?: string;
-}
-
 const FarmerDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const { saveProfile, loadProfile, loading } = useFarmerProfile();
@@ -36,7 +26,7 @@ const FarmerDashboard = () => {
   // Load existing profile data on component mount
   useEffect(() => {
     const loadExistingProfile = async () => {
-      const profile = await loadProfile() as FarmerProfile | null;
+      const profile = await loadProfile();
       if (profile) {
         setFormData({
           farm_name: profile.farm_name || '',
