@@ -119,9 +119,12 @@ export type Database = {
           additional_info: Json | null
           created_at: string
           email: string
+          email_verified: boolean | null
           full_name: string | null
           id: string
           phone: string | null
+          phone_verified: boolean | null
+          signup_date: string | null
           updated_at: string
           user_id: string
           user_type: string | null
@@ -130,9 +133,12 @@ export type Database = {
           additional_info?: Json | null
           created_at?: string
           email: string
+          email_verified?: boolean | null
           full_name?: string | null
           id?: string
           phone?: string | null
+          phone_verified?: boolean | null
+          signup_date?: string | null
           updated_at?: string
           user_id: string
           user_type?: string | null
@@ -141,9 +147,12 @@ export type Database = {
           additional_info?: Json | null
           created_at?: string
           email?: string
+          email_verified?: boolean | null
           full_name?: string | null
           id?: string
           phone?: string | null
+          phone_verified?: boolean | null
+          signup_date?: string | null
           updated_at?: string
           user_id?: string
           user_type?: string | null

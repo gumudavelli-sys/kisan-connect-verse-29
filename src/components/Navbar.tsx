@@ -1,15 +1,20 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, ShoppingCart } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LeafLogo } from "./LeafLogo";
 import { AuthModal } from "./AuthModal";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
+import { Badge } from "@/components/ui/badge";
+import CartDropdown from "./CartDropdown";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user, signOut } = useAuth();
+  const { getTotalItems, isOpen: isCartOpen, setIsOpen: setIsCartOpen } = useCart();
   const navigate = useNavigate();
 
   const handleAuthAction = () => {
@@ -24,6 +29,12 @@ const Navbar = () => {
     // Navigate to appropriate dashboard based on user type
     navigate('/consumer-dashboard');
   };
+
+  const handleCartClick = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
+  const totalItems = getTotalItems();
 
   return (
     <>
@@ -55,6 +66,25 @@ const Navbar = () => {
                 Contact
               </Link>
               
+              {/* Cart Icon */}
+              <div className="relative">
+                <Button 
+                  variant="ghost" 
+                  onClick={handleCartClick}
+                  className="flex items-center space-x-2 relative"
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  {totalItems > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-green-600 hover:bg-green-600"
+                    >
+                      {totalItems}
+                    </Badge>
+                  )}
+                </Button>
+              </div>
+              
               {user ? (
                 <div className="flex items-center space-x-4">
                   <Button 
@@ -82,7 +112,26 @@ const Navbar = () => {
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center space-x-2">
+              {/* Mobile Cart Icon */}
+              <div className="relative">
+                <Button 
+                  variant="ghost" 
+                  onClick={handleCartClick}
+                  className="flex items-center space-x-2 relative"
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  {totalItems > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-green-600 hover:bg-green-600"
+                    >
+                      {totalItems}
+                    </Badge>
+                  )}
+                </Button>
+              </div>
+              
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-700 hover:text-green-600 focus:outline-none focus:text-green-600"
@@ -169,6 +218,7 @@ const Navbar = () => {
         </div>
       </nav>
       
+      <CartDropdown />
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
   );
