@@ -1,243 +1,236 @@
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Phone, Mail, Clock, MessageCircle, Users, Headphones } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Phone, Mail, MapPin, Users, Headphones, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import { useContactForm } from "@/hooks/useContactForm";
+import { useSupportToast } from "@/components/SupportToast";
 
 const Contact = () => {
+  const navigate = useNavigate();
+  const { submitContactForm, loading } = useContactForm();
+  const showSupportMessage = useSupportToast();
+  
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    userType: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    userType: "",
+    subject: "",
+    message: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
+    const success = await submitContactForm(formData);
+    if (success) {
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        userType: "",
+        subject: "",
+        message: "",
+      });
+    }
   };
 
-  const contactInfo = [
-    {
-      icon: Phone,
-      title: 'Phone Support',
-      details: ['+91 98765 43210', '+91 98765 43211'],
-      hours: 'Mon-Sat: 9AM-7PM'
-    },
-    {
-      icon: Mail,
-      title: 'Email Support',
-      details: ['support@farmdirect.com', 'farmers@farmdirect.com'],
-      hours: '24/7 Response'
-    },
-    {
-      icon: MapPin,
-      title: 'Office Address',
-      details: ['123 Agriculture Hub', 'Hyderabad, Telangana 500001'],
-      hours: 'Mon-Fri: 10AM-6PM'
-    }
-  ];
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
-  const supportOptions = [
-    {
-      icon: Users,
-      title: 'For Farmers',
-      description: 'Get help with profile setup, crop listing, and payment issues',
-      action: 'Contact Farmer Support'
-    },
-    {
-      icon: MessageCircle,
-      title: 'For Consumers',
-      description: 'Assistance with orders, delivery tracking, and product queries',
-      action: 'Contact Consumer Support'
-    },
-    {
-      icon: Headphones,
-      title: 'Technical Support',
-      description: 'Help with app issues, account problems, and technical difficulties',
-      action: 'Get Technical Help'
-    }
-  ];
+  const handleFarmerSupport = () => {
+    navigate('/farmer-dashboard');
+  };
+
+  const handleCustomerSupport = () => {
+    showSupportMessage();
+  };
+
+  const handleTechnicalHelp = () => {
+    showSupportMessage();
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <Navbar />
       
       <div className="pt-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Get in Touch
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We're here to help farmers and consumers connect better. 
-              Reach out to us for support, partnerships, or just to share your story.
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Get in touch with our team. We're here to help you with all your agricultural needs.
             </p>
           </div>
 
-          {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {contactInfo.map((info, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <info.icon className="w-8 h-8 text-green-600" />
-                  </div>
-                  <CardTitle className="text-xl text-gray-900">{info.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {info.details.map((detail, idx) => (
-                    <p key={idx} className="text-gray-700 font-medium mb-1">{detail}</p>
-                  ))}
-                  <div className="flex items-center justify-center mt-3 text-sm text-gray-500">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {info.hours}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Contact Form */}
-            <Card className="shadow-lg">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-2xl text-gray-900">Send us a Message</CardTitle>
-                <p className="text-gray-600">We'll get back to you within 24 hours</p>
+                <CardTitle>Send us a Message</CardTitle>
+                <CardDescription>
+                  Fill out the form below and we'll get back to you as soon as possible.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">Full Name *</Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange("phone", e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="userType">User Type</Label>
+                      <Select onValueChange={(value) => handleInputChange("userType", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select user type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="farmer">Farmer</SelectItem>
+                          <SelectItem value="consumer">Consumer</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="subject">Subject *</Label>
                     <Input
-                      name="name"
-                      placeholder="Your Name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <Input
-                      name="email"
-                      type="email"
-                      placeholder="Your Email"
-                      value={formData.email}
-                      onChange={handleInputChange}
+                      id="subject"
+                      type="text"
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange("subject", e.target.value)}
                       required
                     />
                   </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input
-                      name="phone"
-                      placeholder="Phone Number"
-                      value={formData.phone}
-                      onChange={handleInputChange}
+
+                  <div>
+                    <Label htmlFor="message">Message *</Label>
+                    <Textarea
+                      id="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => handleInputChange("message", e.target.value)}
+                      required
                     />
-                    <Select value={formData.userType} onValueChange={(value) => setFormData({...formData, userType: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="I am a..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="farmer">Farmer</SelectItem>
-                        <SelectItem value="consumer">Consumer</SelectItem>
-                        <SelectItem value="partner">Business Partner</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </div>
-                  
-                  <Input
-                    name="subject"
-                    placeholder="Subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  
-                  <Textarea
-                    name="message"
-                    placeholder="Your Message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={5}
-                    required
-                  />
-                  
-                  <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-lg py-3">
-                    Send Message
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
             </Card>
 
-            {/* Support Options */}
+            {/* Contact Information */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Support</h2>
-              
-              {supportOptions.map((option, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <option.icon className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{option.title}</h3>
-                        <p className="text-gray-600 mb-4">{option.description}</p>
-                        <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
-                          {option.action}
-                        </Button>
-                      </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Get in Touch</CardTitle>
+                  <CardDescription>
+                    Multiple ways to reach our support team
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <Phone className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">Phone</p>
+                      <p className="text-gray-600">+91 98765 43210</p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <Mail className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">Email</p>
+                      <p className="text-gray-600">support@agriconnect.com</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <MapPin className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium">Address</p>
+                      <p className="text-gray-600">123 Agriculture Street, Hyderabad, Telangana 500001</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-              {/* FAQ Link */}
-              <Card className="bg-gradient-to-r from-green-600 to-amber-600 text-white">
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-bold mb-2">Frequently Asked Questions</h3>
-                  <p className="mb-4">Find quick answers to common questions</p>
-                  <Button variant="outline" className="bg-white text-green-600 hover:bg-gray-50">
-                    View FAQ
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Support</CardTitle>
+                  <CardDescription>
+                    Get immediate assistance for your specific needs
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button 
+                    onClick={handleFarmerSupport}
+                    className="w-full justify-start" 
+                    variant="outline"
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    Contact Farmer Support
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleCustomerSupport}
+                    className="w-full justify-start" 
+                    variant="outline"
+                  >
+                    <Headphones className="h-4 w-4 mr-2" />
+                    Contact Customer Support
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleTechnicalHelp}
+                    className="w-full justify-start" 
+                    variant="outline"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Get Technical Help
                   </Button>
                 </CardContent>
               </Card>
             </div>
-          </div>
-
-          {/* Map Section */}
-          <div className="mt-12 mb-8">
-            <Card className="overflow-hidden shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl text-gray-900">Visit Our Office</CardTitle>
-                <p className="text-gray-600">Meet our team in person at our Hyderabad headquarters</p>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="h-64 bg-gradient-to-r from-green-400 to-amber-400 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <MapPin className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-lg font-semibold">Interactive Map Coming Soon</p>
-                    <p className="text-sm opacity-90">123 Agriculture Hub, Hyderabad, Telangana</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>

@@ -9,77 +9,98 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      farmer_profiles: {
+      checkout_transactions: {
         Row: {
-          created_at: string
-          farm_name: string
-          farm_photos: string[] | null
-          farmer_name: string
+          cart_items: Json
           id: string
-          land_size: number | null
-          location: string
-          soil_type: string | null
-          story: string | null
-          updated_at: string
-          user_id: string
-          water_source: string | null
+          payment_status: string | null
+          total_amount: number
+          transaction_date: string
+          user_id: string | null
         }
         Insert: {
-          created_at?: string
-          farm_name: string
-          farm_photos?: string[] | null
-          farmer_name: string
+          cart_items: Json
           id?: string
-          land_size?: number | null
-          location: string
-          soil_type?: string | null
-          story?: string | null
-          updated_at?: string
-          user_id: string
-          water_source?: string | null
+          payment_status?: string | null
+          total_amount: number
+          transaction_date?: string
+          user_id?: string | null
         }
         Update: {
-          created_at?: string
-          farm_name?: string
-          farm_photos?: string[] | null
-          farmer_name?: string
+          cart_items?: Json
           id?: string
-          land_size?: number | null
-          location?: string
-          soil_type?: string | null
-          story?: string | null
-          updated_at?: string
-          user_id?: string
-          water_source?: string | null
+          payment_status?: string | null
+          total_amount?: number
+          transaction_date?: string
+          user_id?: string | null
         }
         Relationships: []
       }
-      profiles: {
+      contact_messages: {
         Row: {
-          created_at: string | null
-          farm_name: string | null
-          full_name: string | null
+          created_at: string
+          email: string
           id: string
-          location: string | null
-          updated_at: string | null
+          message: string
+          name: string
+          phone: string | null
+          subject: string
           user_type: string | null
         }
         Insert: {
-          created_at?: string | null
-          farm_name?: string | null
-          full_name?: string | null
-          id: string
-          location?: string | null
-          updated_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          subject: string
           user_type?: string | null
         }
         Update: {
-          created_at?: string | null
-          farm_name?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          subject?: string
+          user_type?: string | null
+        }
+        Relationships: []
+      }
+      user_auth_details: {
+        Row: {
+          additional_info: Json | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+          user_type: string | null
+        }
+        Insert: {
+          additional_info?: Json | null
+          created_at?: string
+          email: string
           full_name?: string | null
           id?: string
-          location?: string | null
-          updated_at?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+          user_type?: string | null
+        }
+        Update: {
+          additional_info?: Json | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
           user_type?: string | null
         }
         Relationships: []
